@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="../#{loginBeans.menu}">
+        <ui:define name="title">
+                Correos de las Agencias
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="form" >
+                <b:growl id="growlMsg" globalOnly="true" placementFrom="bottom"
+                         show-detail="true" show-summary="false" allowDismiss="true"
+                         delay="10000" escape="true" /> 
+                <b:panel>
+                    <b:row>
+                        <b:column medium-screen="2">
+                            <h4>Agencias :</h4> 
+                        </b:column>
+                        <b:column medium-screen="8">
+                            <b:selectOneMenu value="#{correos.agencia}" tooltip="Selecione Agencia" update=":form,tac">
+                                <f:selectItem value="-" itemLabel="selecione Agencia"></f:selectItem>
+                                <f:selectItems value="#{correos.listAgencias}" var="correo" 
+                                               itemLabel="#{correo.agencia}" itemValue="#{correo.agencia}"></f:selectItems>
+                                <f:ajax event="change" listener="#{correos.filtrosCorreos()}"   render="tac estado"></f:ajax>          
+                            </b:selectOneMenu>
+                        </b:column> 
+                        <b:column medium-screen="1">
+                            Estado  :
+                        </b:column>
+                        <b:column medium-screen="1">
+                            <p:selectBooleanCheckbox id="estado" value="#{correos.estadoAgencia}" label="Estado">
+                                <p:ajax update=":form,growlMsg" listener="#{correos.desabilitarAgencias()}" />
+                            </p:selectBooleanCheckbox>
+                        </b:column>
+                    </b:row>                                        
+                    <br/>
+                    <h3>Correos</h3>
+                    <b:row>
+                        <b:column medium-screen="12">
+                            <p:dataTable id="tac" var="correo" value="#{correos.listCorreosMostrar}" >
+                                <p:column headerText="Correo">
+                                    <h:outputText value="#{correo.correo}" />
+                                </p:column>
+                                <p:column headerText="Estado">
+                                    <p:inputSwitch value="#{correo.estado}" >
+                                        <p:ajax listener="#{correos.cambioEstado(correo)}" update=":form:growlMsg"/>
+                                    </p:inputSwitch> 
+                                </p:column>
+
+                            </p:dataTable>
+                        </b:column>
+                    </b:row>
+                </b:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

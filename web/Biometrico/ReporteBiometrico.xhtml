@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="../#{loginBeans.menu}">
+
+        <ui:define name="title">
+            Reporte Biometrico      
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="form" >
+                <b:panel>
+                    <p:growl id="growl" binding="#{biometrico.growl}" autoUpdate="true" globalOnly="true"  widgetVar="aGrowl"/>
+                    <center>
+                        <b:row>
+                            <b:column medium-screen="1">
+                                <h:outputText value="Fecha Inicial:"/>
+                            </b:column>
+                            <b:column medium-screen="2">
+                                <b:datepicker id="f1" mode="toggle-icon" showWeek="true" firstDay="1" value="#{biometrico.fechaInicial}" required="true" required-message="Debe ingresar Fecha inicial"  >
+                                </b:datepicker>
+                            </b:column>
+
+                            <b:column medium-screen="1">
+                                <h:outputText value="Fecha Final:"/>
+                            </b:column>
+                            <b:column medium-screen="2">
+                                <b:datepicker id="f2" mode="toggle-icon" showWeek="true" firstDay="1" value="#{biometrico.fechafinal}" required="true" requiredMessage="Debe ingresar Fecha Final">                    
+                                </b:datepicker>
+                            </b:column>                         
+
+                            <b:column medium-screen="2">
+                                <b:selectOneMenu value="#{biometrico.area}" tooltip="Selecione Area">
+                                    <f:selectItem itemLabel="Todas" itemValue="TODAS"></f:selectItem>
+                                    <f:selectItems value="#{biometrico.listAreas}" var="areas" 
+                                                   itemLabel="#{areas.area}" itemValue="#{areas.codigo}"></f:selectItems>
+                                </b:selectOneMenu>
+                            </b:column>
+
+                            <b:column medium-screen="2">
+                                <b:selectOneMenu value="#{biometrico.empresa}" tooltip="Selecione Empresa">
+                                    <f:selectItem itemLabel="Todas" itemValue="TODAS"></f:selectItem>
+                                    <f:selectItem itemLabel="Expreso Palmira" itemValue="expresop"></f:selectItem>
+                                    <f:selectItem itemLabel="Logistica" itemValue="logisticaEP"></f:selectItem>
+                                    <f:selectItem itemLabel="serviafil" itemValue="serviafil"></f:selectItem>
+                                </b:selectOneMenu>
+                            </b:column>
+
+                            <b:column medium-screen="1">
+                                <b:commandButton look="primary" value="Reporte" action="#{biometrico.consultaBiometrico}" update=":form,tac" 
+                                                 onclick="document.getElementById('ajaxloader').style.display = 'block'">
+                                </b:commandButton>
+
+
+
+                            </b:column>
+                        </b:row>
+                        <br/>
+                        <b:row>
+                            <b:column medium-screen="1">
+                                Exportar
+                                <h:commandLink id="excel">
+                                    <img id="excel" src="../recursos/imagenes/Excel.png" width="35" title="Exportar"></img>                                    
+                                    <p:dataExporter type="xls" target="tac" fileName="ReporteBiometrico" postProcessor="#{biometrico.postProcessXLS}" />
+                                </h:commandLink>
+                            </b:column>
+                        </b:row>
+                    </center>                   
+                        <h:outputLabel value=" Cantidad Marcaciones : #{biometrico.cantidad}"></h:outputLabel>
+                   <br></br>
+                    <img id="ajaxloader" src="../recursos/imagenes/ajaxloader.gif" style="display: none;" width="25" title="cargando"  />
+                    <p:dataTable id="tac" var="extras" value="#{biometrico.listBiometrico}"
+                                 rows="90"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="15,30,60,90,150,300,900,1800">
+
+                        <p:column headerText="Cedula">
+                            <h:outputText value="#{extras.cedula}" />
+                        </p:column>
+                        <p:column headerText="Codigo">
+                            <h:outputText value="#{extras.codigo}" />
+                        </p:column>                       
+                        <p:column headerText="Fecha Inicial">
+                            <h:outputText value="#{extras.fechaIni}" />
+                        </p:column>                       
+                        <p:column headerText="Fecha Final">
+                            <h:outputText value="#{extras.fechaFin}" />
+                        </p:column>
+                        <p:column headerText="Hora Ini">
+                            <h:outputText value="#{extras.horaini}" />
+                        </p:column>
+                        <p:column headerText="Hora Fin">
+                            <h:outputText value="#{extras.horafin}" />
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{extras.nombre}" />
+                        </p:column>
+                        <p:column headerText="Dependencia">
+                            <h:outputText value="#{extras.area}" />
+                        </p:column>                        
+                    </p:dataTable>
+                    <br></br>
+
+                </b:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="../#{loginBeans.menu}">
+        <ui:define name="title">            
+            Reporte Horas Extras Aprobadas   
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="form" >
+                <b:panel>
+                    <p:growl id="growl" binding="#{geminusReporteNovedades.growl}" autoUpdate="true" globalOnly="true"  widgetVar="aGrowl"/>
+                    <center>
+                        <b:row>
+                            <b:column medium-screen="1">
+                                <h:outputText value="Fecha Inicial:"/>
+                            </b:column>
+                            <b:column medium-screen="3">
+                                <b:datepicker id="f1" mode="toggle-icon" showWeek="true" firstDay="1" value="#{geminusReporteNovedades.fechaInicial}" required="true" required-message="Debe ingresar Fecha inicial"  />
+                            </b:column>
+
+                            <b:column medium-screen="1">
+                                <h:outputText value="Fecha Final:"/>
+                            </b:column>
+                            <b:column medium-screen="3">
+                                <b:datepicker id="f2" mode="toggle-icon" showWeek="true" firstDay="1" value="#{geminusReporteNovedades.fechafinal}" required="true" requiredMessage="Debe ingresar Fecha Final"/>
+                            </b:column>
+
+                            <b:column medium-screen="3">
+                                <b:commandButton look="primary" value="Cargar Horas Extras" actionListener="#{geminusReporteNovedades.cargarHorasExtras() }" update=":form,tac"
+                                                 onclick="document.getElementById('ajaxloader').style.display = 'block'"></b:commandButton>
+                            </b:column>
+                        </b:row>
+                        <br></br>
+                        <b:row>
+                            <b:column medium-screen="1">
+                                Exportar
+                                <h:commandLink id="excel">
+                                    <img id="excel" src="../recursos/imagenes/Excel.png" width="35" title="Exportar"></img>                                    
+                                    <p:dataExporter type="xls" target="tac" fileName="HorasExtras" postProcessor="#{geminusReporteNovedades.postProcessXLS}" />
+                                </h:commandLink>
+                            </b:column>
+                            <b:column medium-screen="2">
+                                <h:outputLabel value="Cantidad horas extras :#{geminusReporteNovedades.cantHorasExtras}"></h:outputLabel>
+                            </b:column>
+                        </b:row>
+                    </center>
+
+                    <img id="ajaxloader" src="../recursos/imagenes/ajaxloader.gif" style="display: none;" width="25" title="cargando"  />
+                    <p:dataTable id="tac" var="noveda" value="#{geminusReporteNovedades.list_horasextras}" 
+                                 rows="10"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,50,60,100,200">
+
+                        <p:column headerText="Fecha" >
+                            <h:outputText value="#{noveda.fecha}" />
+                        </p:column>                       
+                        <p:column headerText="Tipo">
+                            <h:outputText value="#{noveda.tipo}" />
+                        </p:column>
+                        <p:column headerText="Codigo">
+                            <h:outputText value="#{noveda.codigo}" />
+                        </p:column>
+                        <p:column headerText="Cedula">
+                            <h:outputText value="#{noveda.cedula}" />
+                        </p:column>  
+                        <p:column headerText="UsuarioMod">
+                            <h:outputText value="#{noveda.usuarioMod}" />
+                        </p:column>   
+                        <p:column headerText="FechaMod">
+                            <h:outputText value="#{noveda.fechaMod}" />
+                        </p:column>   
+                        <p:column headerText="Eliminar">
+                            <center>
+                                <p:selectBooleanCheckbox value="#{noveda.activar}" >
+                                    <p:ajax update=":form:growl" listener="#{geminusReporteNovedades.quitarNovedes(noveda)}" />
+                                </p:selectBooleanCheckbox>
+                            </center>
+                        </p:column>                       
+                    </p:dataTable>
+                    <br></br>
+                    <center>                       
+                        <b:commandButton look="primary" value="Procesar" action="#{geminusReporteNovedades.procesoQuitarNovedades()}"></b:commandButton>
+                    </center>
+
+                </b:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

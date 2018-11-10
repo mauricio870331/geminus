@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+     <ui:composition template="../#{loginBeans.menu}">
+        <ui:define name="title">            
+             Liquidacion Compensados
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="form" >
+                <b:panel>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:growl binding="#{geminusCompen.growl}" id="growl" showDetail="true"  autoUpdate="true" globalOnly="true"/>  
+                    <center>
+                        <b:row>
+                            <b:column medium-screen="1">
+                                <h:outputText value="Fecha Inicial :"/>
+                            </b:column>
+                            <b:column medium-screen="3">
+                                <b:datepicker id="f1" mode="toggle-icon" showWeek="true" firstDay="1" value="#{geminusCompen.fecha1}" required="true" required-message="Debe ingresar Fecha inicial"  />
+                            </b:column>
+
+                            <b:column medium-screen="1">
+                                <h:outputText value="Fecha Final :"/>
+                            </b:column>
+                            <b:column medium-screen="3">
+                                <b:datepicker id="f2" mode="toggle-icon" showWeek="true" firstDay="1" value="#{geminusCompen.fecha2}" required="true" requiredMessage="Debe ingresar Fecha Final"/>
+                            </b:column>
+
+                            <b:column medium-screen="3">
+                                <b:commandButton value="Cargar"  look="primary" actionListener="#{geminusCompen.cargarCompensados() }" update=":form,tac"
+                                                  onclick="document.getElementById('ajaxloader').style.display = 'block'"></b:commandButton>
+                            </b:column>
+                        </b:row>
+                    </center>
+                    <br/>
+                    <img id="ajaxloader" src="../recursos/imagenes/ajaxloader.gif" style="display: none;" width="25" title="cargando"  />
+                    <p:dataTable id="tac" var="gem" value="#{geminusCompen.listcomp}" 
+                                 rows="15"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="15,30,50">
+
+                        <p:column headerText="#">
+                            <h:outputText value="#{gem.numero}" />
+                        </p:column>
+                        <p:column headerText="Trabajador">
+                            <h:outputText value="#{gem.trabajador}" />
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{gem.nombre}" />
+                        </p:column>
+                        <p:column headerText="Compensados">
+                            <h:outputText value="#{gem.dias}" />
+                        </p:column>
+                    </p:dataTable>
+                    <br></br>
+                    <center>
+                        <b:commandButton value="Liquidar" ajax="true" look="primary"
+                                         actionListener="#{geminusCompen.liquidarCompensados()}" update=":form,tac" />
+
+                    </center>
+                
+                </b:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

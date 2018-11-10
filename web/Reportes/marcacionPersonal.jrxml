@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="423cd65d-e271-465a-b5da-8c1e57084a7b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cedula" class="java.lang.String">
+		<parameterDescription><![CDATA[cedula]]></parameterDescription>
+	</parameter>
+	<parameter name="fechaini" class="java.lang.String"/>
+	<parameter name="fechafin" class="java.lang.String"/>
+	<parameter name="nombre" class="java.lang.String"/>
+	<parameter name="agencia" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from BiometricoReportePersonalMarcaciones($P{cedula},$P{fechaini},$P{fechafin}) order by 1,2]]>
+	</queryString>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="marcacion" class="java.sql.Time"/>
+	<field name="tipo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement x="136" y="12" width="285" height="30" uuid="14efc0d3-80d1-45e6-9cc0-bb2ad7ab39e7"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Reporte Marcacion Expreso  Palmira"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="73" splitType="Stretch">
+			<textField>
+				<reportElement x="136" y="24" width="211" height="20" uuid="d4b9e43c-4e83-4b0d-894a-a83375ec471f"/>
+				<textFieldExpression><![CDATA[$P{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="24" width="75" height="20" uuid="5f896fcf-7ac8-4350-834b-c0d2e345484d"/>
+				<textFieldExpression><![CDATA[$P{cedula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="46" height="20" uuid="7f3d9439-049b-4787-9d28-46b6266280b1"/>
+				<textFieldExpression><![CDATA["Desde :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="0" width="100" height="20" uuid="44621de6-1883-462d-a9cd-51dfe0c6871d"/>
+				<textFieldExpression><![CDATA[$P{fechaini}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="211" y="0" width="100" height="20" uuid="d27d4e33-cf30-4d10-9802-bbe9d02cb5de"/>
+				<textFieldExpression><![CDATA[$P{fechafin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="176" y="0" width="35" height="20" uuid="86ba99ad-de04-49e8-86ed-ac4b02fffc36"/>
+				<textFieldExpression><![CDATA["Hasta : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="24" width="61" height="20" uuid="c2259767-9eca-49b2-bceb-9746834b5e19"/>
+				<textFieldExpression><![CDATA["Trabajador : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="45" width="61" height="20" uuid="778d682b-5f79-4f13-8f5b-0d00f82f0c5f"/>
+				<textFieldExpression><![CDATA["Agencia "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="45" width="100" height="20" uuid="13ff0c70-f080-454e-ba45-f1605b3d3eb5"/>
+				<textFieldExpression><![CDATA[$P{agencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement x="175" y="0" width="50" height="14" uuid="6e66c3b0-b9a3-4175-8ca0-2b0bb4b589fc"/>
+				<text><![CDATA[TIPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="74" height="14" uuid="b4f9e3d3-949e-4afa-aba7-31c1bf15ae7d"/>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="0" width="100" height="14" uuid="215fcce4-4435-41c5-a198-a7382fd316a3"/>
+				<text><![CDATA[MARCACION]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="14" width="242" height="1" uuid="470e56b7-f833-42c4-a11c-43967f35bcfb"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="73" height="20" uuid="1e372334-7552-42aa-b5ac-76265e2654bf"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField pattern="h.mm a">
+				<reportElement x="81" y="0" width="100" height="20" uuid="e9be5b93-a28a-4ad4-bc92-596629597b10"/>
+				<textFieldExpression><![CDATA[$F{marcacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="175" y="0" width="100" height="20" uuid="4869715a-cbea-48f6-979a-453db7419ad9"/>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

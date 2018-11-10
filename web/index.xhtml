@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Biometrico</title>
+    </h:head>
+    <h:body>
+        <br/><br/> <br/><br/><br/><br/>
+        <b:row>
+            <b:column medium-screen="4">
+
+            </b:column>
+            <b:column medium-screen="4">
+
+                <b:panel title="Login - Sistema Biometrico" collapsible="false">
+                    <h:form>
+                        <p:growl binding="#{geminusCompen.growl}" id="growl" showDetail="true"  autoUpdate="true" globalOnly="true"/>  
+
+                        <img src="recursos/imagenes/logo.png" width="350" align="center"></img> <br/>
+                        <h:form>
+
+                            <b:inputText id="usuario" placeholder="Usuario" class="form-control input-lg" value="#{loginBeans.usu.usuario}"  />
+                            <b:inputSecret class="form-control input-lg" id="password" placeholder="Clave" value="#{loginBeans.usu.clave}"/>
+                            <div class="pwstrength_viewport_progress"></div>
+
+                            <h:commandButton  value="Iniciar Sesion" class="btn btn-lg btn-primary btn-block" action="#{loginBeans.iniciarSesion()}"></h:commandButton>
+
+                        </h:form>
+                    </h:form>
+                </b:panel>
+            </b:column>
+
+            <b:column medium-screen="4">
+
+            </b:column>
+        </b:row>
+
+
+    </h:body>
+
+</html>
+

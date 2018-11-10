@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="../#{loginBeans.menu}">
+        <ui:define name="title">
+            Validacion Horas Extras
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="form" >
+                <b:panel>                   
+                    <h3>Lista de Programacion </h3>
+                    <img id="ajaxloader" src="../recursos/imagenes/ajaxloader.gif" style="display: none;" width="25" title="cargando"  />
+                    <p:dataTable id="tac" var="turnos" value="#{cargaArchivo.listTurnos}" 
+                                 rows="60"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="15,30,60,90,150,300">
+                        <p:column headerText="Trabajador">
+                            <h:outputText value="#{turnos.codigo}" />
+                        </p:column>
+                        <p:column headerText="Dependencia">
+                            <h:outputText value="#{turnos.dependencia}" />
+                        </p:column>
+                        <p:column headerText="Fecha">
+                            <h:outputText value="#{turnos.fecha}" />
+                        </p:column>                       
+                        <p:column headerText="Jornada">
+                            <h:outputText value="#{turnos.turno}" />
+                        </p:column>
+                        <p:column headerText="Estado">
+                            <h:outputText value="#{turnos.estado}" />
+                        </p:column>
+                    </p:dataTable>
+                <br/>
+                <b:commandButton value="Cargar Turnos" look="primary" actionListener="#{cargaArchivo.guardarProgramacionGeminus()}"
+                                 onclick="document.getElementById('ajaxloader').style.display = 'block'"></b:commandButton>
+                </b:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

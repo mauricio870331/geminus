@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="../#{loginBeans.menu}">
+        <ui:define name="title">
+            Programacion de Turnos
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="form" >
+                <b:growl id="growlMsg" globalOnly="true" placementFrom="bottom"
+                         show-detail="true" show-summary="false" allowDismiss="true"
+                         delay="10000" escape="true" /> 
+                <b:panel>
+                    <b:row>
+                        <b:column medium-screen="2">
+                            <h4>Fecha Inicial :</h4> <br/>
+                            <h4>Ruta :</h4>
+                        </b:column>
+                        <b:column medium-screen="8">
+                            <b:datepicker id="f1" mode="toggle-icon" showWeek="true" firstDay="1" value="#{cargaArchivo.fecha}" required="true" required-message="Debe ingresar Fecha inicial"  />
+                            <br/> 
+                            <p:fileUpload fileUploadListener="#{cargaArchivo.cargarRuta}" mode="advanced" dragDropSupport="false"
+                                          update="growlMsg" sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(csv)$/" />
+                        </b:column> 
+                    </b:row>
+                    <br/>                    
+                    <img id="ajaxloader" src="../recursos/imagenes/ajaxloader.gif" style="display: none;" width="25" title="cargando"  />
+                    <br/>
+                    <b:commandButton value="Cargar Turnos"  look="primary" actionListener="#{cargaArchivo.start()}"
+                                    onclick="document.getElementById('ajaxloader').style.display = 'block'" ></b:commandButton>
+                    <br/>
+
+                    <h3>Lista Errores</h3>
+                    <p:dataTable id="tac" var="turnos" value="#{cargaArchivo.listErrores}" 
+                                 rows="60"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="15,30,60,90,150,300">
+                        <p:column headerText="Trabajador">
+                            <h:outputText value="#{turnos.codigo}" />
+                        </p:column>
+                        <p:column headerText="Turno">
+                            <h:outputText value="#{turnos.dependencia}" />
+                        </p:column>                       
+                        <p:column headerText="Descripcion">
+                            <h:outputText value="#{turnos.fecha}" />
+                        </p:column>
+                    </p:dataTable>
+                </b:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

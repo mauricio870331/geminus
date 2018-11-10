@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:p="http://primefaces.org/ui"  
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="../#{loginBeans.menu}">
+
+        <ui:define name="title">
+            Reporte Marcacion Por Trabajador  
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="form" >
+                <b:panel>
+                    <p:growl id="growl" binding="#{biometrico.growl}" autoUpdate="true" globalOnly="true"  widgetVar="aGrowl"/>
+                    <center>
+                        <b:row>
+                            <b:column medium-screen="1">
+                                <h:outputText value="Fecha Inicial :"/>
+                            </b:column>
+                            <b:column medium-screen="2">
+                                <b:datepicker id="f1" mode="toggle-icon" showWeek="true" firstDay="1" value="#{biometrico.fechaInicial}" required="true" required-message="Debe ingresar Fecha inicial"  >
+                                </b:datepicker>
+                            </b:column>
+
+                            <b:column medium-screen="1">
+                                <h:outputText value="Fecha Final"/>
+                            </b:column>
+                            <b:column medium-screen="2">
+                                <b:datepicker id="f2" mode="toggle-icon" showWeek="true" firstDay="1" value="#{biometrico.fechafinal}" required="true" requiredMessage="Debe ingresar Fecha Final">                    
+                                </b:datepicker>
+                            </b:column>    
+
+                            <b:column medium-screen="1">
+                                <h:outputText value="Cedula :"/>
+                            </b:column>
+                            <b:column medium-screen="2">
+                                <b:inputText id="name" value="#{biometrico.cedula}" required="true" requiredMessage="Debe ingresar Cedula"></b:inputText>
+                            </b:column>           
+
+                            <b:column medium-screen="2">
+                                <b:commandButton look="primary" value="Reporte" action="#{biometrico.consultaBiometricoPersonal()}" update=":form,tac" 
+                                                 onclick="document.getElementById('ajaxloader').style.display = 'block'">
+                                    <f:ajax event="blur" listener="#{biometrico.validacionUsuario()}"></f:ajax>
+                                </b:commandButton>
+
+
+
+                            </b:column>
+                        </b:row>
+                        <br/>
+                        <b:row>
+
+                            <b:column medium-screen="12">
+                                <h:outputText value="#{biometrico.nameCodigo}"/><br/><br/>
+                                <h:commandLink style="color: black;font-size: 10px"
+                                               actionListener="#{biometrico.imprimir(actionEvent)}" 
+                                               immediate="true" target='_blank' >
+                                    <img id="imprimir" src="../recursos/imagenes/ICONOPDF.png" width="40" ></img></h:commandLink>
+                                <h:commandLink id="excel">
+                                    <img id="excel" src="../recursos/imagenes/Excel.png" width="40">   </img>                                    
+                                    <p:dataExporter type="xls" target="tac" fileName="Marcaciones" postProcessor="#{biometrico.postProcessXLS}" />
+                                </h:commandLink>
+                            </b:column>
+
+                        </b:row> 
+                    </center>
+                    <br>
+                        <h:outputLabel value=" Cantidad Marcaciones : #{biometrico.cantidad}"></h:outputLabel>
+                    </br>
+                    <img id="ajaxloader" src="../recursos/imagenes/ajaxloader.gif" style="display: none;" width="25" title="cargando"  />
+                    <p:dataTable id="tac" var="extras" value="#{biometrico.listBiometrico}"
+                                 rows="90"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="15,30,60,90,150,300,900,1800">
+
+                        <p:column headerText="Fecha ">
+                            <h:outputText value="#{extras.fechaIni}" />
+                        </p:column>                       
+                        <p:column headerText="Marcacion">
+                            <h:outputText value="#{extras.horaini}" />
+                        </p:column>
+                        <p:column headerText="Tipo">
+                            <h:outputText value="#{extras.turno}" />
+                        </p:column>                
+                    </p:dataTable>
+                    <br></br>
+
+                </b:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
